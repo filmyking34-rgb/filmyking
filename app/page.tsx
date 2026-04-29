@@ -14,15 +14,15 @@ export const metadata: Metadata = {
   description: "filmyking - The best site to download 300MB Movies, Bollywood, Hollywood, South Hindi Dubbed movies in 480p, 720p, 1080p. Direct Download Links.",
   keywords: "filmyking, moviemod , Vegamovies, dot movies , how to download movies,Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Download Movies, Dual Audio, 720p, 1080p",
   other: {
-    // Yahan apna asli Google Verification Code dalna na bhulein
+    // Yahan apna asli 
     "google-site-verification": "verification_code_here", 
-    "robots": "index, follow", // Ye line add karein taaki home page pakka index ho
+    "robots": "index, follow", // 
   }
 }
 
 export default async function HomePage() {
   
-  // Parallel fetching for high performance (Speed maintained)
+  // Parallel 
   const [
     genres, 
     featuredMovies, 
@@ -32,7 +32,7 @@ export default async function HomePage() {
     getGenres(),
     getFeaturedMovies(5), // Top 5 Featured
     getAppSettings(),
-    getMoviesPaged({ page: 1, pageSize: 24 }) // Thoda jada data load karenge
+    getMoviesPaged({ page: 1, pageSize: 24 }) //
   ])
 
   return (
