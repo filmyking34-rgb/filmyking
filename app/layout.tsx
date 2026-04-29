@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "YOUR_GOOGLE_VERIFICATION_CODE_HERE", // Search Console code yahan daalna mat bhulna
+    google: "hwsLt53yYqjQ5PRUJIbdhP8zMYoO-yg3f9VkPpqHesg", // Search Console code yahan daalna mat bhulna
     yandex: "yandex_verification_code",
     other: {
       "dmca-site-verification": "dmca_code",
