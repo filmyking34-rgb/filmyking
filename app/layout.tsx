@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "99999999999999999999999", // 
+    google: "hwsLt53yYqjQ5PRUJIbdhP8zMYoO-yg3f9VkPpqHesg", // Search Console code yahan daalna mat bhulna
     yandex: "yandex_verification_code",
     other: {
       "dmca-site-verification": "dmca_code",
@@ -88,17 +88,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* AdsKeeper Script (Revenue) */}
-        <Script src="0000000000000000000000" strategy="afterInteractive" />
+        {/* (Revenue) */}
+        <Script src="777777777777remove" />
         
         {/* Google Analytics (Traffic Tracking) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=0000000000000000000000000000000000" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-BCFHY449CC" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '000000000000000000000000000');
+            gtag('config', 'G-BCFHY449CC');
           `}
         </Script>
 
