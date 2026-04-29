@@ -105,7 +105,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
       {/* --- ADS INJECTION --- */}
       <Script src="https://pl29281509.profitablecpmratenetwork.com/aa/26/f3/aa26f33242b9c3df689c271b8a4e8d84.js" strategy="beforeInteractive" />
 
-      {/* --- api key supabase --- */}
+      {/* --- api key supabase --https://xabkybevddenygvczssb.supabase.co- */}
       <Script src="https://encouragementglutton.com/72/1a/7d/721a7d25baafdfb8f3c454074cb5c833.js" strategy="afterInteractive" />
 
       {/*-- */}
