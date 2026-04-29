@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "hwsLt53yYqjQ5PRUJIbdhP8zMYoO-yg3f9VkPpqHesg", // Search Console code yahan daalna mat bhulna
+    google: "99999999999999999999999", // 
     yandex: "yandex_verification_code",
     other: {
       "dmca-site-verification": "dmca_code",
@@ -89,16 +89,16 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         {/* AdsKeeper Script (Revenue) */}
-        <Script src="https://jsc.adskeeper.com/site/1062508.js" strategy="afterInteractive" />
+        <Script src="0000000000000000000000" strategy="afterInteractive" />
         
         {/* Google Analytics (Traffic Tracking) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-KJ2F868DMX" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=0000000000000000000000000000000000" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-KJ2F868DMX');
+            gtag('config', '000000000000000000000000000');
           `}
         </Script>
 
