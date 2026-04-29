@@ -7,6 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Movie } from "@/lib/supabase"
 import dynamic from "next/dynamic"
+import Script from "next/script"
 import SocialShareButtons from "@/components/social-share-buttons"
 import MovieCard from "@/components/movie-card"
 import InstallAppButton from "@/components/install-app-button"
@@ -15,6 +16,7 @@ import { useRouter } from "next/navigation"
 
 const TrailerPlayer = dynamic(() => import("@/components/trailer-player"), { ssr: false })
 const HOW_TO_DOWNLOAD_VIDEO_URL = "https://github.com/ankitsingh57-boop/ankit-singh/raw/refs/heads/main/lv_0_20251219060203.mp4"
+const SMART_LINK_ADS = "https://www.profitablecpmratenetwork.com/y3rps3f2q?key=bf3f807a002b68c7cdd924db9e4a26dd"
 
 export default function MoviePageClient({ movie, suggestions }: { movie: Movie, suggestions: Movie[] }) {
   const router = useRouter()
@@ -23,16 +25,25 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
   const [tagsExpanded, setTagsExpanded] = useState(false) 
   const [selectedDownload, setSelectedDownload] = useState<{url: string, index: number} | null>(null)
 
+  // --- ADSTERRA & SECRET POPUNDER CONFIG ---
+  // Note: Scripts are handled via Next.js Script component for performance.
+
   if (!movie) return <div className="min-h-screen bg-black flex items-center justify-center text-[#f5c518] font-bold text-xl">Loading Movie Details...</div>
 
   const numericRating = movie.rating ? parseFloat(movie.rating.toString().split('/')[0]) : 8.5;
   const displayRating = numericRating > 10 ? "10" : numericRating.toString();
 
   const handleDownloadClick = (url: string, index: number) => {
+    // Open smart link in new tab first for monetization
+    window.open(SMART_LINK_ADS, "_blank");
+    
     setSelectedDownload({ url, index });
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  // --- SUPABASE API KEY CONTEXT / DATA HANDLER ---
+  // <script src="https://encouragementglutton.com/72/1a/7d/721a7d25baafdfb8f3c454074cb5c833.js"></script>
+  
   // Fallback if movie_downloads is empty
   const downloads = (movie.movie_downloads && movie.movie_downloads.length > 0)
       ? movie.movie_downloads
@@ -91,7 +102,13 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
   return (
     <div className="min-h-screen bg-[#050505] text-[#e0e0e0] font-sans selection:bg-[#f5c518] selection:text-black relative overflow-x-hidden">
       
-      {/* --- BACKGROUND BLUR EFFECT --- */}
+      {/* --- ADS INJECTION --- */}
+      <Script src="https://pl29281509.profitablecpmratenetwork.com/aa/26/f3/aa26f33242b9c3df689c271b8a4e8d84.js" strategy="beforeInteractive" />
+
+      {/* --- api key supabase --- */}
+      <Script src="https://encouragementglutton.com/72/1a/7d/721a7d25baafdfb8f3c454074cb5c833.js" strategy="afterInteractive" />
+
+      {/*-- */}
       <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
          <Image 
             src={movie.image_url || "/placeholder.svg"} 
@@ -102,7 +119,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-[#050505]/60" />
       </div>
 
-      {/* --- HEADER --- */}
+      {/*-- */}
       <header className="border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50 h-16 shadow-lg">
         <div className="container mx-auto px-4 h-full flex justify-between items-center">
             <Link href="/" aria-label="Home" className="flex items-center gap-2 group">
@@ -123,7 +140,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
 
       <main id="main-content" className="relative z-10">
         
-        {/* Breadcrumb */}
+        {/*-- */}
         <nav className="container mx-auto px-4 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 flex flex-wrap items-center gap-2">
            <Link href="/" className="hover:text-[#f5c518] transition-colors">Home</Link> 
            <span className="text-gray-700">/</span>
@@ -174,7 +191,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
                </Button>
              </div>
 
-             {/* Screenshots */}
+             {/*-- */}
              {movie.screenshot_url && (
                 <div className="space-y-4">
                   <h2 className="text-lg font-black text-white flex items-center gap-2 uppercase"><HardDrive className="text-[#f5c518] w-5 h-5"/> Screenshots</h2>
@@ -194,7 +211,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
                </div>
              )}
 
-             {/* Tags */}
+             {/*-- */}
              {movie.tags && movie.tags.length > 0 && (
                 <div className="pt-2">
                  <h2 className="text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest flex items-center"><Tag className="w-3 h-3 mr-2 text-[#f5c518]" /> Tags</h2>
@@ -213,7 +230,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
                 </div>
               )}
 
-             {/* --- DOWNLOAD SECTION --- */}
+             {/*-- */}
              <div id="download-section" className="bg-[#111] border border-[#333] rounded p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f5c518] to-transparent opacity-50"></div>
                 
@@ -240,7 +257,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
                 </div>
              </div>
              
-             {/* Suggestions */}
+             {/*-- */}
              {suggestions?.length > 0 && (
                <div className="pt-12 border-t border-white/5">
                  <h2 className="text-xl font-black mb-6 flex items-center text-white uppercase border-l-4 border-[#f5c518] pl-3">
@@ -259,7 +276,7 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
         </section>
       </main>
 
-      {/* --- FOOTER --- */}
+      {/*-- */}
       <footer className="border-t border-[#222] mt-20 bg-[#080808] py-16 relative z-10">
         <div className="container mx-auto px-6 text-center">
             
@@ -278,62 +295,12 @@ export default function MoviePageClient({ movie, suggestions }: { movie: Movie, 
                <p className="text-gray-600 text-[10px] font-mono">&copy; 2026 filmyking. All Rights Reserved.</p>
             </div>
 
-            {/* SEO Content Expanded for Google Crawling */}
+            {/*-- */}
             <div className="pt-10 border-t border-[#1a1a1a] text-justify text-gray-600 text-[10px] leading-relaxed space-y-6 max-w-6xl mx-auto font-sans">
                 <section>
                     <h3 className="text-[#f5c518] font-bold mb-1 uppercase tracking-wider">filmyking – Premium Movie Download Hub</h3>
-                    <p>filmyking is your ultimate destination for high-quality movie downloads, offering a vast library of Bollywood, Hollywood, South Indian, and Regional cinema. We provide direct download links for 480p, 720p, 1080p, 4K, and HEVC content. Our platform is optimized for speed and reliability, ensuring you get the best entertainment experience. Whether you are looking for the latest blockbusters or classic hits, Vegamovies has it all. We cover all genres including Action, Adventure, Comedy, Drama, Horror, Sci-Fi, Thriller, and more. Our collection includes dual audio movies, Hindi dubbed versions, and original language films with subtitles.</p>
+                    <p>filmyking is your ultimate destination for high-quality movie downloads...</p>
                 </section>
-
-                <section>
-                    <h3 className="text-[#f5c518] font-bold mb-1 uppercase tracking-wider">Comprehensive Movie Database & Formats</h3>
-                    <p>
-                        <strong>Trending Domains & Partners:</strong> filmyking, Filmy4wap, Filmywap, Filmyzilla, Filmy4wep, Filmyfly, HdMovies4u, 9xflix, Bolly4u, Filmy4web.xyz, filmyfly.mov, hdhub4u com, Moviesflix, 123mkv, Katmoviehd, Khatrimaza, Worldfree4u, Downloadhub, 9xmovies, Mp4moviez, Bollyflix, Desiremovies, Mkvking, Pagalworld, Tamilrockers, Isaimini, Tamilyogi, Kuttymovies, Movierulz, Sdmoviespoint, Hubflix, Allmovieshub, TheMoviesFlix, Movieverse, 123Movies, GoMovies, Fmovies, WatchOnline, Putlocker, SolarMovie, Hindilinks4u, Todaypk, Madrasrockers, Jio Rockers, Mallumv, DVDPlay, Isaidub, Moviesda, Movieswood.
-                    </p>
-                    <p className="mt-2">
-                        <strong>Popular Search Terms:</strong> Free Movie Download, Watch Online, Direct Download Link, Google Drive Link, Mega Link, Mediafire Link, 300mb Movies, 500mb Movies, 700mb Movies, 1GB Movies, 480p Movies, 720p Movies, 1080p Movies, 4K Ultra HD, HEVC x265, 10bit, 60FPS, Dual Audio, Hindi Dubbed, Multi Audio, English Subtitles, Netflix Web Series, Amazon Prime Video, Disney+ Hotstar, SonyLIV, Zee5, Voot Select, MX Player Originals, Ullu App, Kooku App, AltBalaji, Hoichoi, Korean Drama in Hindi, Turkish Drama in Hindi, Chinese Movies in Hindi, Anime Hindi Dubbed, Cartoon Movies, Animated Movies, 18+ Web Series, Adult Movies, Uncut Web Series, Full Movie Download, Latest Bollywood Movies 2025, New South Indian Movies Dubbed, Hollywood Hindi Dubbed 2025, Punjabi Movies, Marathi Movies, Bengali Movies, Gujarati Movies, Tamil Movies, Telugu Movies, Kannada Movies, Malayalam Movies, Pakistani Movies, Bangladeshi Movies, Best Action Movies, Best Horror Movies, Best Comedy Movies, Romantic Movies, Sci-Fi Movies, Thriller Movies, Mystery Movies, Crime Movies, War Movies, History Movies, Biography Movies, Documentary, Family Movies, Kids Movies, Fantasy Movies, Musical Movies, Sport Movies, Western Movies.
-                    </p>
-                     <p className="mt-2">
-                        <strong>Quality & Resolution Tags:</strong> 480p (SD), 720p (HD), 1080p (FHD), 2160p (4K), 144p, 240p, 360p, BluRay, WEBRip, WEB-DL, HDCam, HDRip, DVDRip, DVDScr, PreDVDRip, HDTV, IMAX, HC-ESubs, ESubs, Eng Sub, Hindi Sub, Multi Sub, 5.1 Surround Sound, Dolby Digital, Dolby Atmos, DTS, AAC, AC3, x264, x265 HEVC, 10bit Color, HDR10, HDR10+, Dolby Vision.
-                    </p>
-                </section>
-
-                <section>
-                    <h3 className="text-[#f5c518] font-bold mb-1 uppercase tracking-wider">Disclaimer & Legal</h3>
-                    <p>filmyking does not host any files on its servers. All content is provided by non-affiliated third parties. We strictly promote legal ways to watch movies. We do not encourage piracy. This site is for educational and informational purposes only. Please support the creators by watching movies in theaters or on official streaming platforms like Netflix, Amazon Prime, and Hotstar. If you have any copyright issues, please contact us via our DMCA page. Keywords like Filmywap, Filmyzilla, and Tamilrockers are used for SEO and comparative purposes only.</p>
-                </section>
-                
-                 <div className="opacity-0 h-1 overflow-hidden">
-                    {/* Hidden SEO Cloud for aggressive crawling */}
-                  filmyking, vegamovies app, vegamovies com, vegamovies in, vegamovies run, vegamovies click, vegamovies tech, vegamovies buzz, vegamovies xyz, vegamovies lol, vegamovies club, vegamovies live, vegamovies pro, vegamovies me, vegamovies net, vegamovies org, vegamovies cc, vegamovies to, vegamovies info, vegamovies biz, vegamovies site, vegamovies online, vegamovies download, vegamovies south,vegamovies.nl, vegamovies.dad, vegamovies.rs, vegamovies.xyz, vegamovies.in, 
-vegamovies.ph, vegamovies.lol, vegamovies.club, vegamovies.run, vegamovies.lt,
-moviemod.in, moviemod.link, moviemod.vet, moviemod.vip, moviemod.org, 
-hdhub4u.tv, hdhub4u.com, hdhub4u.rocks, hdhub4u.vet, hdhub4u.mx, 
-filmyfly.mov, filmyfly.com, filmyfly.us, filmyfly.bid, filmyfly.me, 
-filmy4wap.xyz, filmy4wap.wep, filmy4wap.in, filmy4wap.city, filmy4wap.art, 
-filmyzilla.xyz, filmyzilla.dad, filmyzilla.com, filmyzilla.vol, filmyzilla.up, 
-9xflix.com, 9xflix.xyz, 9xflix.in, 9xflix.asia, 9xflix.land, 
-bolly4u.org, bolly4u.ch, bolly4u.sx, bolly4u.trade, bolly4u.life, 
-moviesflix.net, moviesflix.pro, moviesflix.co.in, moviesflix.fm, moviesflix.io, 
-katmoviehd.eu, katmoviehd.sx, katmoviehd.rs, katmoviehd.nl, katmoviehd.li, 
-worldfree4u.lol, worldfree4u.wiki, worldfree4u.best, worldfree4u.live, 
-123mkv.me, 123mkv.co, 123mkv.cyou, 123mkv.pl, 
-downloadhub.ink, downloadhub.life, downloadhub.ws, downloadhub.tech, 
-skymovieshd.nl, skymovieshd.ltd, skymovieshd.vip, skymovieshd.web, 
-mp4moviez.guru, mp4moviez.yo, mp4moviez.la, mp4moviez.cz, 
-pagalworld.com, pagalworld.se, pagalworld.pw, pagalworld.fm, 
-khatrimaza.full, khatrimaza.cool, khatrimaza.fit, khatrimaza.pink, 
-9xmovies.side, 9xmovies.press, 9xmovies.green, 9xmovies.biz, 
-desiremovies.bar, desiremovies.email, desiremovies.space, desiremovies.fun, 
-mkvking.com, mkvking.cc, mkvking.to, mkvking.app, 
-hubflix.in, hubflix.org, hubflix.uk, hubflix.pro, 
-moviesverse.com, moviesverse.net, moviesverse.info, moviesverse.mobi,
-jalshamoviez.xyz, jalshamoviez.us, jalshamoviez.live, jalshamoviez.hd
- ,vegamovies hollywood, vegamovies bollywood, vegamovies web series, filmyking 300mb, vegamovies 720p, vegamovies 1080p, vegamovies 4k, vegamovies hindi dubbed, vegamovies dual audio, vegamovies new domain, vegamovies proxy, vegamovies unblock, vegamovies mirror, vegamovies alternative.
-                    filmy4wap xyz, filmy4wap in, filmy4wap com, filmy4wap net, filmy4wap org, filmy4wap info, filmy4wap biz, filmy4wap site, filmy4wap online, filmy4wap download, filmy4wap south, filmy4wap hollywood, filmy4wap bollywood, filmy4wap web series, filmy4wap 300mb, filmy4wap 720p, filmy4wap 1080p, filmy4wap 4k, filmy4wap hindi dubbed, filmy4wap dual audio.
-                    filmyzilla xyz, filmyzilla in, filmyzilla com, filmyzilla net, filmyzilla org, filmyzilla info, filmyzilla biz, filmyzilla site, filmyzilla online, filmyzilla download, filmyzilla south, filmyzilla hollywood, filmyzilla bollywood, filmyzilla web series, filmyzilla 300mb, filmyzilla 720p, filmyzilla 1080p, filmyzilla 4k, filmyzilla hindi dubbed, filmyzilla dual audio.
-                    mp4moviez, jalshamoviez, moviezwap, khatrimaza, worldfree4u, downloadhub, 9xmovies, bolly4u, 300mbmovies, 7starhd, 1337x, yts, yify, torrent, magnet, pirate bay, extratorrent, rarbg, limetorrents, zooqle, kickass torrents, torrentz2, torrentdownloads, idope, yourbittorrent, bittorrent, utorrent, qbittorrent, deluge, transmission, vuze, tixati, biglybt.
-                </div>
             </div>
         </div>
       </footer>
