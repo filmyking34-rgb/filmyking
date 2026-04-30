@@ -105,7 +105,7 @@ export default function RootLayout({
         {/* SEO Meta Tags Injection for Competitors */}
         <meta name="monetag" content="verification_token" />
       </head>
-      <script>(function(s){s.dataset.zone='10824844',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      
       {/* Background changed to BLACK for Vega Theme */}
       <body className="bg-[#0a0a0a] text-[#e0e0e0] antialiased min-h-screen selection:bg-[#f5c518] selection:text-black">
         
