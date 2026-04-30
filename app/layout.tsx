@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "filmyking - Download 300MB Movies, 480p, 720p, 1080p, Dual Audio",
+    default: "filmyking - Download 300MB Movies, 480p movei Download, 720p, 1080p, Dual Audio",
     template: `%s | ${SITE_NAME}`,
   },
   description: "filmyking (filmy king) is the best website to download Bollywood, Hollywood, South Hindi Dubbed movies in 480p, 720p, 1080p. We provide direct G-Drive links. Better than Hdhub4u, Filmyfly, Katarmovie, and Mp4moviez.",
