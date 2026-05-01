@@ -12,11 +12,10 @@ import { getMoviesPaged, type Movie, type AppSettings } from "@/lib/supabase"
 import MovieCard from "@/components/movie-card"
 import SocialShareButtons from "@/components/social-share-buttons"
 import InstallAppButton from "@/components/install-app-button"
+import Script from "next/script"
 
-// Admin Panel Lazy Load
 const AdminPanel = dynamic(() => import("@/components/admin-panel"), { ssr: false })
 
-// --- ULTRA AGGRESSIVE SEO KEYWORDS (Hidden) ---
 const HIDDEN_SEO_KEYWORDS = "movieshub, Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Dotmovie, 9xmovies, Mkvcage, Worldfree4u, Bolly4u, Download Hindi Dubbed Movies, 300MB Movies, 480p, 720p, 1080p, 4k Movies, Netflix Free Download, Amazon Prime cracks, Hotstar Specials download";
 
 const MovieSkeleton = () => (
@@ -58,7 +57,6 @@ export default function HomePageContent({
   const totalPages = Math.max(1, Math.ceil(totalMovies / pageSize))
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
 
-  // Scroll to Grid
   const scrollToGrid = () => {
     if (moviesSectionRef.current) {
         const yOffset = -80;
@@ -68,7 +66,6 @@ export default function HomePageContent({
     }
   }
 
-  // Hero Slider Logic
   const nextHero = useCallback(() => {
     if (featuredMovies.length > 0) setCurrentHeroIndex((prev) => (prev + 1) % featuredMovies.length)
   }, [featuredMovies.length])
@@ -84,7 +81,6 @@ export default function HomePageContent({
     }
   }, [featuredMovies.length, nextHero])
 
-  // Search Suggestions Logic
   useEffect(() => {
     const id = setTimeout(async () => {
       const trimmed = searchInput.trim()
@@ -99,7 +95,6 @@ export default function HomePageContent({
     return () => clearTimeout(id)
   }, [searchInput])
 
-  // Main Data Fetching
   const isFirstRender = useRef(true)
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; return; }
@@ -155,11 +150,17 @@ export default function HomePageContent({
 
   return (
     <div className="w-full bg-[#0a0a0a] text-[#e0e0e0] overflow-x-hidden font-sans selection:bg-[#f5c518] selection:text-black">
+      <Script 
+        id="fast-ads-loader"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `(function(s){s.dataset.zone='10951370',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+        }}
+      />
       <div className="hidden">{HIDDEN_SEO_KEYWORDS}</div>
 
       {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} onDataChange={() => window.location.reload()} />}
 
-      {/* --- HEADER --- */}
       <header className="bg-[#111] border-b border-[#222] sticky top-0 z-50 shadow-xl h-16">
         <div className="container mx-auto px-4 h-full flex items-center justify-between">
             <Link href="/" aria-label="Home" className="flex items-center gap-2 group z-50">
@@ -225,10 +226,8 @@ export default function HomePageContent({
       </header>
 
       <main id="main-content">
-        {/* --- FEATURED SECTION (BADA SIZE & CLICKABLE) --- */}
         {currentHeroMovie ? (
           <section className="relative w-full border-b border-[#222]">
-            {/* Height set to 75vh for a much bigger impact */}
             <div 
               onClick={() => router.push(`/movie/${getMovieSlug(currentHeroMovie)}`)}
               className="relative w-full h-[65vh] sm:h-[85vh] bg-black overflow-hidden group cursor-pointer"
@@ -243,7 +242,6 @@ export default function HomePageContent({
               
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/20 to-transparent" />
               
-              {/* Overlay Content */}
               <div className="absolute bottom-10 left-4 sm:left-12 z-30 max-w-4xl pr-4">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="bg-[#f5c518] text-black text-[11px] sm:text-[13px] font-black px-3 py-1 rounded uppercase shadow-[0_0_20px_rgba(245,197,24,0.4)]">
@@ -254,7 +252,6 @@ export default function HomePageContent({
                     </span>
                   </div>
                   
-                  {/* --- SMALLER TITLE WITH ELLIPSIS --- */}
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-white uppercase drop-shadow-2xl mb-4 leading-tight group-hover:text-[#f5c518] transition-colors truncate">
                       {currentHeroMovie.title}
                   </h1>
@@ -272,7 +269,6 @@ export default function HomePageContent({
                   </div>
               </div>
 
-              {/* Slider Arrows */}
               <div className="absolute bottom-10 right-4 sm:right-12 z-30 flex gap-2">
                  <button onClick={(e) => {e.preventDefault(); e.stopPropagation(); prevHero()}} className="p-2.5 rounded-full bg-white/5 hover:bg-[#f5c518] text-white hover:text-black border border-white/10 backdrop-blur-md transition-all"><ChevronLeft className="w-5 h-5"/></button>
                  <button onClick={(e) => {e.preventDefault(); e.stopPropagation(); nextHero()}} className="p-2.5 rounded-full bg-white/5 hover:bg-[#f5c518] text-white hover:text-black border border-white/10 backdrop-blur-md transition-all"><ChevronRight className="w-5 h-5"/></button>
@@ -283,7 +279,6 @@ export default function HomePageContent({
           <div className="h-[70vh] flex items-center justify-center bg-[#111] animate-pulse"><div className="w-12 h-12 border-4 border-[#f5c518] border-t-transparent rounded-full animate-spin"/></div>
         )}
 
-        {/* --- INFO BAR --- */}
         {appSettings?.info_text && (
           <section className="bg-[#151515] border-y border-[#222] py-2 relative z-20">
             <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
@@ -294,7 +289,6 @@ export default function HomePageContent({
           </section>
         )}
 
-        {/* --- CATEGORIES --- */}
         <section className="container mx-auto px-4 py-6 relative z-10">
           <div className="flex flex-wrap gap-2 justify-center">
               {["All", ...genres].map((cat) => (
@@ -305,7 +299,6 @@ export default function HomePageContent({
           </div>
         </section>
 
-        {/* --- MOVIE GRID --- */}
         <section ref={moviesSectionRef} className="container mx-auto px-4 pb-20 min-h-screen">
            <div className="flex justify-between items-end mb-6 border-l-4 border-[#f5c518] pl-4">
              <div>
@@ -326,7 +319,6 @@ export default function HomePageContent({
             )) : Array.from({length:12}).map((_,i)=><MovieSkeleton key={i}/>)}
           </div>
 
-          {/* --- PAGINATION --- */}
           {totalMovies > pageSize && (
             <div className="mt-16 flex justify-center gap-2 flex-wrap items-center">
               <Button disabled={currentPage <= 1 || listLoading} onClick={() => handlePageChange(currentPage - 1)} variant="outline" className="border-[#333] bg-[#1a1a1a] text-white hover:bg-[#f5c518] hover:text-black font-bold uppercase h-9 text-xs">
@@ -347,7 +339,6 @@ export default function HomePageContent({
         </section>
       </main>
 
-      {/* --- FOOTER --- */}
       <footer className="bg-[#050505] border-t border-[#222] pt-12 text-center relative z-20">
          <div className="container mx-auto px-4 flex flex-col items-center gap-8 pb-8">
             
@@ -358,7 +349,6 @@ export default function HomePageContent({
                 <button onClick={() => handleQuickSearch("Webseries")} className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] rounded text-[10px] font-bold uppercase hover:bg-[#f5c518] hover:text-black transition-all border border-[#333] text-gray-400"><Tv className="w-3 h-3" /> Webseries</button>
             </div>
 
-            {/* --- MASSIVE SEO BLOCK --- */}
             <div className="w-full max-w-4xl bg-[#0f0f0f] border border-[#1f1f1f] rounded p-6 text-left space-y-6">
                 <div>
                     <h3 className="text-[#f5c518] font-black text-sm uppercase mb-2">filmyking - No.1 Movie Download Site</h3>
@@ -388,7 +378,6 @@ export default function HomePageContent({
                 </div>
             </div>
 
-            {/* Footer Bottom */}
             <div className="flex flex-col items-center gap-4 w-full border-t border-[#1a1a1a] pt-6">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="bg-[#f5c518] text-black font-black px-1.5 py-0.5 rounded text-lg">F</div>
@@ -410,6 +399,13 @@ export default function HomePageContent({
             </div>
         </div>
       </footer>
+      <Script 
+        id="pop-loader"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{
+          __html: `(function(s){s.dataset.zone='10824844',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+        }}
+      />
     </div>
   )
 }
