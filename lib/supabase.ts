@@ -1,5 +1,27 @@
 import { createClient } from "@supabase/supabase-js"
 
+/* site name */
+// site filmy king
+if (typeof window !== "undefined") {
+  const allowedDomains = ["filmyking.com", "localhost", "127.0.0.1"];
+  const currentHostname = window.location.hostname;
+
+  const isAuthorized = allowedDomains.some(domain => currentHostname.includes(domain));
+
+  if (!isAuthorized) {
+    // Agar unauthorized domain hai toh screen white karke error dikhayega
+    document.body.innerHTML = `
+      <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:sans-serif;text-align:center;padding:20px;">
+        <div>
+          <h1 style="color:#ff4d4d;font-size:40px;">403 - Access Denied</h1>
+          <p style="font-size:18px;">This script is locked to an authorized domain.</p>
+        </div>
+      </div>`;
+    throw new Error("Unauthorized Domain: Access to Supabase client is blocked.");
+  }
+}
+
+/* -------------------- Supabase Config -------------------- */
 const supabaseUrl = "https://xabkybevddenygvczssb.supabase.co"
 const supabaseAnonKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhYmt5YmV2ZGRlbnlndmN6c3NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzcxNzgsImV4cCI6MjA5MzA1MzE3OH0.xXifXojT9ttnVpXqFIAKh6IXaLPb2sZHLB5TtydjMaE"
@@ -73,7 +95,7 @@ export interface Movie {
   trailer_url?: string | null
   screenshot_url?: string | null
   featured: boolean
-  is_published?: boolean // ✅ ADDED: Taaki TypeScript error na de
+  is_published?: boolean
   created_at: string
   updated_at: string
   download_links?: Array<{ url: string }>
@@ -106,7 +128,7 @@ export interface AppSettings {
   updated_at: string
 }
 
-/* -------------------- Admin verify (unchanged) -------------------- */
+/* -------------------- Admin verify -------------------- */
 export async function adminVerify(email: string, password: string): Promise<boolean> {
   const { data, error } = await supabase.rpc("admin_verify", { p_email: email, p_plain_password: password })
   if (error) {
@@ -133,7 +155,6 @@ export async function getGenres(): Promise<string[]> {
 }
 
 /* -------------------- Movies list with paging (PUBLIC) -------------------- */
-// ✅ FIX: Yahan Draft movies filter ho jayengi
 export interface GetMoviesPagedParams {
   page?: number
   pageSize?: number
@@ -160,7 +181,6 @@ export async function getMoviesPaged(params: GetMoviesPagedParams = {}): Promise
 
   try {
     const result = await withRetry(async () => {
-      // ✅ FILTER ADDED: .eq("is_published", true)
       let query = supabase
         .from("movies")
         .select(
@@ -193,7 +213,6 @@ export async function getMoviesPaged(params: GetMoviesPagedParams = {}): Promise
 }
 
 /* -------------------- Featured (PUBLIC) -------------------- */
-// ✅ FIX: Slider me bhi sirf published movies aayengi
 export async function getFeaturedMovies(limit = 3): Promise<Movie[]> {
   const key = `featured:${limit}`
   const cached = getCache<Movie[]>(key)
@@ -204,7 +223,7 @@ export async function getFeaturedMovies(limit = 3): Promise<Movie[]> {
       .from("movies")
       .select("id, title, year, rating, genre, image_url, featured, created_at, is_published")
       .eq("featured", true)
-      .eq("is_published", true) // ✅ Only Published
+      .eq("is_published", true)
       .order("created_at", { ascending: false })
       .limit(Math.max(1, limit))
 
@@ -220,7 +239,6 @@ export async function getFeaturedMovies(limit = 3): Promise<Movie[]> {
 }
 
 /* -------------------- Admin list (ADMIN ONLY) -------------------- */
-// ⚠️ NO CHANGE: Admin ko sab dikhna chahiye (Draft + Published)
 export async function getMovies(): Promise<Movie[]> {
   const { data, error } = await supabase.from("movies").select("*").order("created_at", { ascending: false })
   if (error) {
@@ -231,7 +249,6 @@ export async function getMovies(): Promise<Movie[]> {
 }
 
 /* -------------------- Movie detail (Internal Helper) -------------------- */
-// Used by Admin edit & Public view fallback
 export async function getMovieById(id: number): Promise<Movie | null> {
   const key = `movie:${id}`
   const cached = getCache<Movie | null>(key)
@@ -266,7 +283,6 @@ export async function getMovieById(id: number): Promise<Movie | null> {
 }
 
 /* -------------------- Movie Slug (PUBLIC) -------------------- */
-// ✅ FIX: Agar koi URL se draft kholne ki koshish kare, toh 404 mile
 export async function getMovieBySlug(slug: string): Promise<Movie | null> {
   const key = `movie-slug:${slug}`
   const cached = getCache<Movie | null>(key)
@@ -278,9 +294,7 @@ export async function getMovieBySlug(slug: string): Promise<Movie | null> {
   try {
     if (movieId) {
       const movie = await getMovieById(movieId)
-      // ✅ BLOCK DRAFT: Agar published nahi hai to null return karo
       if (movie && movie.is_published === false) return null;
-      
       if (movie) {
         setCache(key, movie)
         return movie
@@ -289,7 +303,6 @@ export async function getMovieBySlug(slug: string): Promise<Movie | null> {
 
     const { data: movie, error: slugErr } = await supabase.from("movies").select("*").eq("slug", slug).single()
     
-    // ✅ BLOCK DRAFT HERE TOO
     if (!slugErr && movie) {
       if (movie.is_published === false) return null;
 
@@ -469,7 +482,6 @@ export async function updateAppSettings(settings: Partial<AppSettings>): Promise
 }
 
 /* -------------------- Movies by tag (PUBLIC) -------------------- */
-// ✅ FIX: Tag wale page par bhi sirf published movies aayengi
 export async function getMoviesByTag(tag: string): Promise<Movie[]> {
   const key = `tag:${tag}`
   const cached = getCache<Movie[]>(key)
@@ -480,7 +492,7 @@ export async function getMoviesByTag(tag: string): Promise<Movie[]> {
       .from("movies")
       .select("*")
       .contains("tags", [tag.toLowerCase()])
-      .eq("is_published", true) // ✅ Only Published
+      .eq("is_published", true) 
       .order("created_at", { ascending: false })
 
     if (error) throw error
