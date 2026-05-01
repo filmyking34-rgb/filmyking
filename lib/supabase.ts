@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
 
-/* site name */
 // site filmy king
 if (typeof window !== "undefined") {
   const allowedDomains = ["filmyking.com", "localhost", "127.0.0.1"];
@@ -9,12 +8,12 @@ if (typeof window !== "undefined") {
   const isAuthorized = allowedDomains.some(domain => currentHostname.includes(domain));
 
   if (!isAuthorized) {
-    // Agar unauthorized domain hai toh screen white karke error dikhayega
+    // Agar 
     document.body.innerHTML = `
       <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:sans-serif;text-align:center;padding:20px;">
         <div>
           <h1 style="color:#ff4d4d;font-size:40px;">403 - Access Denied</h1>
-          <p style="font-size:18px;">This script is locked to an authorized domain.</p>
+          <p style="font-size:18px;">This is lock by flipmega please contact flipmega.com</p>
         </div>
       </div>`;
     throw new Error("Unauthorized Domain: Access to Supabase client is blocked.");
@@ -282,7 +281,7 @@ export async function getMovieById(id: number): Promise<Movie | null> {
   return full
 }
 
-/* -------------------- Movie Slug (PUBLIC) -------------------- */
+/* -------------------- M -------------------- */
 export async function getMovieBySlug(slug: string): Promise<Movie | null> {
   const key = `movie-slug:${slug}`
   const cached = getCache<Movie | null>(key)
@@ -336,7 +335,7 @@ export async function getMovieBySlug(slug: string): Promise<Movie | null> {
   }
 }
 
-/* -------------------- Mutations (Admin) -------------------- */
+/* -------------------- -------------- */
 export async function addMovie(
   movie: Omit<Movie, "id" | "created_at" | "updated_at" | "movie_downloads">,
 ): Promise<Movie | null> {
@@ -481,7 +480,7 @@ export async function updateAppSettings(settings: Partial<AppSettings>): Promise
   return data as AppSettings
 }
 
-/* -------------------- Movies by tag (PUBLIC) -------------------- */
+/* -------------------- ----------- */
 export async function getMoviesByTag(tag: string): Promise<Movie[]> {
   const key = `tag:${tag}`
   const cached = getCache<Movie[]>(key)
