@@ -4,7 +4,7 @@ import HomePageContent from "./home-page-client"
 import HomeLoading from "@/components/home-loading"
 import { Metadata } from "next"
 
-// --- SUPER SEO SETTINGS --- ads s
+// --- SUPER SEO SETTINGS --- ads 
 // CHANGE: 0 ko hata kar 3600 (1 Hour) karein.
 // Isse Server fast rahega aur Google indexing badhegi.
 export const revalidate = 0; 
