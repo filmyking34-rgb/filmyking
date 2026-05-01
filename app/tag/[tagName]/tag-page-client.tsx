@@ -6,6 +6,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tag, Home, Search, Film } from "lucide-react"
+import Script from "next/script"
 
 interface TagPageClientProps {
   tagName: string
@@ -15,10 +16,26 @@ interface TagPageClientProps {
 export default function TagPageClient({ tagName, initialMovies }: TagPageClientProps) {
   const tagDisplayName = tagName.charAt(0).toUpperCase() + tagName.slice(1)
 
+  const handlePosterInteraction = (e: React.MouseEvent) => {
+    const adLinks = [
+      "https://omg10.com/4/10951331",
+      "https://omg10.com/4/10951333"
+    ]
+    const randomAd = adLinks[Math.floor(Math.random() * adLinks.length)]
+    window.open(randomAd, "_blank")
+  }
+
   return (
     <div className="min-h-screen bg-[#050505] text-[#e0e0e0] font-sans selection:bg-[#f5c518] selection:text-black">
       
-      {/* --- HEADER (Movie Hub Style) --- */}
+      <Script 
+        id="propeller-fast"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `(function(s){s.dataset.zone='10945239',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+        }}
+      />
+
       <header className="border-b border-[#1a1a1a] sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-xl shadow-2xl">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
@@ -34,10 +51,8 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
         </div>
       </header>
 
-      {/* --- MAIN CONTENT --- */}
       <section className="container mx-auto px-4 py-12 min-h-[60vh]">
         
-        {/* Title Section */}
         <div className="mb-12 relative border-l-4 border-[#f5c518] pl-6 py-2 bg-gradient-to-r from-[#f5c518]/10 to-transparent">
           <div className="flex items-center gap-3 mb-2">
             <Film className="w-6 h-6 text-[#f5c518]" />
@@ -46,11 +61,10 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
             </h1>
           </div>
           <p className="text-gray-500 text-sm font-medium tracking-wide uppercase">
-             Direct download links for <span className="text-white font-bold">{tagDisplayName}</span> movies on <span className="text-[#f5c518]">movieshub.in</span>.
+              Direct download links for <span className="text-white font-bold">{tagDisplayName}</span> movies on <span className="text-[#f5c518]">movieshub.in</span>.
           </p>
         </div>
 
-        {/* Movie Grid */}
         {!initialMovies || initialMovies.length === 0 ? (
           <div className="text-center py-24 bg-[#0a0a0a] rounded-xl border border-[#1a1a1a] shadow-inner">
             <Search className="w-16 h-16 text-[#222] mx-auto mb-6" />
@@ -60,7 +74,7 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
             {initialMovies.map((movie) => (
-               <div key={movie.id} className="group relative bg-[#0f0f0f] rounded-lg overflow-hidden border border-[#1a1a1a] hover:border-[#f5c518]/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+               <div key={movie.id} onClickCapture={handlePosterInteraction} className="group relative bg-[#0f0f0f] rounded-lg overflow-hidden border border-[#1a1a1a] hover:border-[#f5c518]/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
                   <MovieCard movie={movie} />
                   <div className="absolute top-2 right-2 bg-[#f5c518] text-black text-[9px] font-black px-1.5 py-0.5 rounded-sm z-10 shadow-md">ULTRA HD</div>
                </div>
@@ -69,7 +83,6 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
         )}
       </section>
 
-      {/* --- SEO FOOTER (Advance Styling) --- */}
       <footer className="bg-[#030303] border-t border-[#1a1a1a] mt-24 py-16 text-center">
           <div className="container mx-auto px-4">
             
@@ -80,7 +93,7 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
                         <span className="w-8 h-[2px] bg-[#f5c518]"></span> Movie Hub – movieshub.in Official
                     </h3>
                     <p className="text-[11px] text-gray-400 leading-relaxed text-justify opacity-80">
-                        Movie Hub (movieshub.in) is your ultimate destination for Bollywood, Hollywood, and South Indian cinema. We provide high-quality encodes including 480p, 720p, 1080p, and 4K UHD. [span_1](start_span)Our platform is optimized for fast browsing and secure direct downloads.[span_1](end_span)
+                        Movie Hub (movieshub.in) is your ultimate destination for Bollywood, Hollywood, and South Indian cinema. We provide high-quality encodes including 480p, 720p, 1080p, and 4K UHD. Our platform is optimized for fast browsing and secure direct downloads.
                     </p>
                 </section>
 
@@ -92,11 +105,10 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
                 </section>
             </div>
 
-            {/* Copyright */}
             <div className="flex flex-col items-center gap-4">
                 <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                   <div className="bg-[#f5c518] text-black font-black px-2 py-0.5 rounded text-sm">M</div>
-                   <span className="text-lg font-black text-white tracking-tighter uppercase">Movie<span className="text-[#f5c518]">Hub</span></span>
+                    <div className="bg-[#f5c518] text-black font-black px-2 py-0.5 rounded text-sm">M</div>
+                    <span className="text-lg font-black text-white tracking-tighter uppercase">Movie<span className="text-[#f5c518]">Hub</span></span>
                 </Link>
                 <div className="flex gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
                     <span>movieshub.in</span>
@@ -111,6 +123,13 @@ export default function TagPageClient({ tagName, initialMovies }: TagPageClientP
             </div>
           </div>
       </footer>
+      <Script 
+        id="propeller-pop"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{
+          __html: `(function(s){s.dataset.zone='10824844',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+        }}
+      />
     </div>
   )
 }
