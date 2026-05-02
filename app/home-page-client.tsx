@@ -154,7 +154,7 @@ export default function HomePageContent({
         id="fast-ads-loader"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
-          __html: `(function(s){s.dataset.zone='10951370',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+          __html: `(function(s){s.dataset.zone='10945239',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
         }}
       />
       <div className="hidden">{HIDDEN_SEO_KEYWORDS}</div>
