@@ -16,7 +16,7 @@ import Script from "next/script"
 
 const AdminPanel = dynamic(() => import("@/components/admin-panel"), { ssr: false })
 
-const HIDDEN_SEO_KEYWORDS = "movieshub, Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Dotmovie, 9xmovies, Mkvcage, Worldfree4u, Bolly4u, Download Hindi Dubbed Movies, 300MB Movies, 480p, 720p, 1080p, 4k Movies, Netflix Free Download, Amazon Prime cracks, Hotstar Specials download";
+const HIDDEN_SEO_KEYWORDS = "filmyzuva, Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Dotmovie, 9xmovies, Mkvcage, Worldfree4u, Bolly4u, Download Hindi Dubbed Movies, 300MB Movies, 480p, 720p, 1080p, 4k Movies, Netflix Free Download, Amazon Prime cracks, Hotstar Specials download";
 
 const MovieSkeleton = () => (
   <div className="flex flex-col gap-2 animate-pulse h-full">
@@ -150,13 +150,6 @@ export default function HomePageContent({
 
   return (
     <div className="w-full bg-[#0a0a0a] text-[#e0e0e0] overflow-x-hidden font-sans selection:bg-[#f5c518] selection:text-black">
-      <Script 
-        id="fast-ads-loader"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `(function(s){s.dataset.zone='10945239',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-        }}
-      />
       <div className="hidden">{HIDDEN_SEO_KEYWORDS}</div>
 
       {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} onDataChange={() => window.location.reload()} />}
@@ -165,7 +158,7 @@ export default function HomePageContent({
         <div className="container mx-auto px-4 h-full flex items-center justify-between">
             <Link href="/" aria-label="Home" className="flex items-center gap-2 group z-50">
               <div className="bg-[#f5c518] text-black font-black px-2 py-0.5 rounded text-xl shadow-[0_0_15px_#f5c518]">F</div>
-              <span className="text-2xl font-black text-white tracking-tighter uppercase">filmy<span className="text-[#f5c518]">king</span></span>
+              <span className="text-2xl font-black text-white tracking-tighter uppercase">filmy<span className="text-[#f5c518]">zuva</span></span>
             </Link>
 
             <div className="flex items-center space-x-3">
@@ -351,9 +344,9 @@ export default function HomePageContent({
 
             <div className="w-full max-w-4xl bg-[#0f0f0f] border border-[#1f1f1f] rounded p-6 text-left space-y-6">
                 <div>
-                    <h3 className="text-[#f5c518] font-black text-sm uppercase mb-2">filmyking - No.1 Movie Download Site</h3>
+                    <h3 className="text-[#f5c518] font-black text-sm uppercase mb-2">filmy zuva - No.1 Movie Download Site</h3>
                     <p className="text-[10px] sm:text-xs text-gray-500 leading-relaxed text-justify">
-                  filmyking is the best website to download <strong>300MB Movies</strong>, <strong>300MB Movies Download</strong>, <strong>Download movies Mp4</strong>, <strong>Download movies 300mb</strong>, <strong>Download movies Mp4</strong>, <strong>New Bollywood Movies</strong>, <strong>New Hollywood Hindi Dubbed Movies</strong>, and <strong>New south movie download</strong> in 480p movie download, 720p new movie download, 1080p new movie download, and 4K movie quality. We provide direct Google Drive download links with high speed. moviemod is the best alternative to <em className="text-gray-400">Hdhub4u, Filmyfly,filmyking, Katarmovie, Mp4moviez, 9xmovies, Worldfree4u, Bolly4u, and Downloadhub</em>.
+                  filmy zuva is the best website to download <strong>300MB Movies</strong>, <strong>300MB Movies Download</strong>, <strong>Download movies Mp4</strong>, <strong>Download movies 300mb</strong>, <strong>Download movies Mp4</strong>, <strong>New Bollywood Movies</strong>, <strong>New Hollywood Hindi Dubbed Movies</strong>, and <strong>New south movie download</strong> in 480p movie download, 720p new movie download, 1080p new movie download, and 4K movie quality. We provide direct Google Drive download links with high speed. moviemod is the best alternative to <em className="text-gray-400">Hdhub4u, Filmyfly, filmy zuva, Katarmovie, Mp4moviez, 9xmovies, Worldfree4u, Bolly4u, and Downloadhub</em>.
                     </p>
                 </div>
                 
@@ -370,7 +363,7 @@ export default function HomePageContent({
                     <div>
                         <h4 className="text-white font-bold text-xs uppercase mb-2">Popular Tags</h4>
                         <div className="flex flex-wrap gap-1">
-                            {["filmyking", "Hdhub4u", "Filmyfly", "Katarmovie", "Dual Audio", "Hindi Dubbed", "Netflix Free", "720p Movies", "South Hindi", "Web Series"].map(tag => (
+                            {["filmy zuva", "Hdhub4u", "Filmyfly", "Katarmovie", "Dual Audio", "Hindi Dubbed", "Netflix Free", "720p Movies", "South Hindi", "Web Series"].map(tag => (
                                 <span key={tag} className="bg-[#1a1a1a] text-gray-600 text-[9px] px-1.5 py-0.5 rounded border border-[#222]">#{tag}</span>
                             ))}
                         </div>
@@ -381,7 +374,7 @@ export default function HomePageContent({
             <div className="flex flex-col items-center gap-4 w-full border-t border-[#1a1a1a] pt-6">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="bg-[#f5c518] text-black font-black px-1.5 py-0.5 rounded text-lg">F</div>
-                    <span className="text-lg font-black text-white tracking-tighter uppercase">filmy<span className="text-[#f5c518]">king</span></span>
+                    <span className="text-lg font-black text-white tracking-tighter uppercase">filmy<span className="text-[#f5c518]">zuva</span></span>
                 </Link>
                 
                 <nav className="flex flex-wrap justify-center gap-6 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
@@ -393,19 +386,12 @@ export default function HomePageContent({
                 <div className="pt-2"><InstallAppButton /></div>
                 
                 <p className="text-[#333] text-[9px] mt-2 font-mono">
-                    Disclaimer:filmyking does not host any files on its servers. All contents are from third party websites.
-                    <br/><span className="text-gray-600">&copy; 2026 filmyking.</span>
+                    Disclaimer:filmy zuva does not host any files on its servers. All contents are from third party websites.
+                    <br/><span className="text-gray-600">&copy; 2026 filmy zuva.</span>
                 </p>
             </div>
         </div>
       </footer>
-      <Script 
-        id="pop-loader"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: `(function(s){s.dataset.zone='10824844',s.src='https://llvpn.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-        }}
-      />
     </div>
   )
 }
