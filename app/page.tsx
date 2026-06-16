@@ -10,9 +10,9 @@ import { Metadata } from "next"
 export const revalidate = 0; 
 
 export const metadata: Metadata = {
-  title: "filmy zuva - Download 300MB Movies, 480p, 720p, 1080p, Dual Audio",
-  description: "filmy zuva - The best site to download 300MB Movies, Bollywood, Hollywood, South Hindi Dubbed movies in 480p, 720p, 1080p. Direct Download Links.",
-  keywords: "filmy zuva, moviemod , Vegamovies, dot movies , how to download movies,Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Download Movies, Dual Audio, 720p, 1080p",
+  title: "filmyking - Download 300MB Movies, 480p, 720p, 1080p, Dual Audio",
+  description: "filmyking - The best site to download 300MB Movies, Bollywood, Hollywood, South Hindi Dubbed movies in 480p, 720p, 1080p. Direct Download Links.",
+  keywords: "filmyking, moviemod , Vegamovies, dot movies , how to download movies,Vegamovie, Hdhub4u, Filmyfly, Katarmovie, Download Movies, Dual Audio, 720p, 1080p",
   other: {
     // Yahan apna asli 
     "google-site-verification": "verification_code_here", 
