@@ -8,12 +8,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { items: movies } = await getMoviesPaged({ page: 1, pageSize: 2000 })
 
   // 2. Movie Entries (Unique ID based)
-  const movieEntries: MetadataRoute.Sitemap = movies.map((movie) => ({
-    url: `${BASE_URL}/movie/${movie.id}`, // ✅ Movie ke liye hamesha ID
-    lastModified: new Date(movie.created_at || new Date()),
+  import { generateSlug } from "@/lib/utils/slug"
+
+const movieEntries: MetadataRoute.Sitemap = movies.map((movie) => {
+  const slug = movie.slug || generateSlug(movie.title, movie.year)
+  return {
+    url: `${BASE_URL}/movie/${encodeURIComponent(slug)}`,
+    lastModified: new Date(movie.updated_at || movie.created_at || new Date()),
     changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }))
+    priority: 0.9,
+  }
+})
 
   // 3. Tag Entries (Slug based)
   // Saare movies se unique tags nikalne ka logic
