@@ -5,6 +5,7 @@ import { Star, Play } from "lucide-react"
 import React, { useState, useEffect, useRef } from "react"
 import type { Movie } from "@/lib/supabase"
 import Link from "next/link"
+import { generateSlug } from "@/lib/utils/slug"
 
 const defaultMovie: Movie = {
   id: 0,
@@ -28,7 +29,8 @@ function MovieCardBase({ movie = defaultMovie }: Props) {
   const [isLoaded, setIsLoaded] = useState(false)
   const imgRef = useRef<HTMLImageElement>(null)
   
-  const movieUrl = movie.slug ? `/movie/${movie.slug}` : `/movie/${movie.id}`
+  // ✅ Title Slug based URL (id हटाकर Movie Title Slug)
+  const movieUrl = `/movie/${movie.slug || generateSlug(movie.title, movie.year)}`
 
   useEffect(() => {
     if (imgRef.current?.complete) {
