@@ -13,6 +13,7 @@ import MovieCard from "@/components/movie-card"
 import SocialShareButtons from "@/components/social-share-buttons"
 import InstallAppButton from "@/components/install-app-button"
 import Script from "next/script"
+import { generateSlug } from "@/lib/utils/slug"
 
 const AdminPanel = dynamic(() => import("@/components/admin-panel"), { ssr: false })
 
@@ -26,7 +27,8 @@ const MovieSkeleton = () => (
   </div>
 )
 
-const getMovieSlug = (movie: Movie) => movie.slug || movie.id.toString()
+// ✅ Movie Title Slug based (ID हटाकर Title Slug)
+const getMovieSlug = (movie: Movie) => movie.slug || generateSlug(movie.title, movie.year)
 
 export default function HomePageContent({ 
   initialMovies, 
@@ -408,4 +410,4 @@ export default function HomePageContent({
       />
     </div>
   )
-}
+                     }
