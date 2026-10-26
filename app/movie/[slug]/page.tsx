@@ -1,5 +1,6 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect, RedirectType } from "next/navigation"
 import { getMovieBySlug, getMoviesPaged } from "@/lib/supabase"
+import { generateSlug } from "@/lib/utils/slug"
 import MoviePageClient from "./movie-page-client"
 import { Suspense } from "react"
 import Script from "next/script"
@@ -12,11 +13,11 @@ export const fetchCache = "force-no-store";
 export const dynamicParams = true;
 
 interface MoviePageProps {
-  params: { slug: string }
+  params: any
 }
 
-const SITE_NAME = "movieshub";
-const SITE_DOMAIN = "https://filmyking.com/";
+const SITE_NAME = "filmyking";
+const SITE_DOMAIN = "https://filmyking.com";
 
 function getSafeRating(rating: any) {
   let r = parseFloat(rating);
@@ -27,8 +28,12 @@ function getSafeRating(rating: any) {
 
 // --- SEO & METADATA GENERATION ---
 export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
-  const movie = await getMovieBySlug(params.slug)
+  const resolvedParams = await Promise.resolve(params)
+  const movie = await getMovieBySlug(resolvedParams.slug)
   if (!movie) return { title: `Movie Not Found | ${SITE_NAME}` }
+
+  const targetSlug = movie.slug || generateSlug(movie.title, movie.year)
+  const canonicalUrl = `${SITE_DOMAIN}/movie/${encodeURIComponent(targetSlug)}`
 
   const seoTitle = `Download ${movie.title} (${movie.year}) Dual Audio | ${SITE_NAME}`;
   const seoDesc = `Download ${movie.title} (${movie.year}) in 480p, 720p, 1080p. Watch ${movie.title} Full Movie. Story: ${movie.description ? movie.description.substring(0, 100) : movie.title}...`;
@@ -41,15 +46,15 @@ export async function generateMetadata({ params }: MoviePageProps): Promise<Meta
       `Download ${movie.title}`,
       "Hindi Dubbed",
       "480p", "720p", "1080p",
-      "Vegamovies"
+      "filmyking"
     ],
     alternates: { 
-      canonical: `${SITE_DOMAIN}/movie/${movie.slug || movie.id}` 
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: seoTitle,
       description: seoDesc,
-      url: `${SITE_DOMAIN}/movie/${movie.slug || movie.id}`,
+      url: canonicalUrl,
       siteName: SITE_NAME,
       images: [
         {
@@ -68,11 +73,19 @@ export async function generateMetadata({ params }: MoviePageProps): Promise<Meta
 }
 
 export default async function MoviePage({ params }: MoviePageProps) {
-  const movie = await getMovieBySlug(params.slug)
+  const resolvedParams = await Promise.resolve(params)
+  const movie = await getMovieBySlug(resolvedParams.slug)
   
   if (!movie) notFound();
 
-  // Suggestions Logic - Now fetches fresh due to force-dynamic
+  const targetSlug = movie.slug || generateSlug(movie.title, movie.year)
+
+  // ✅ 301/308 SEO Permanent Redirect: ID (जैसे /movie/170 या /movie/7) आते ही Title URL पर ऑटोमैटिक भेज देगा
+  if (/^\d+$/.test(resolvedParams.slug) && resolvedParams.slug !== targetSlug) {
+    redirect(`/movie/${encodeURIComponent(targetSlug)}`, RedirectType.replace);
+  }
+
+  // Suggestions Logic
   const { items: allMovies } = await getMoviesPaged({ page: 1, pageSize: 60 })
   let suggestions: any[] = []
   if (allMovies) {
@@ -81,6 +94,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
   }
 
   const displayRating = getSafeRating(movie.rating)
+  const canonicalUrl = `${SITE_DOMAIN}/movie/${encodeURIComponent(targetSlug)}`
 
   const movieSchema = {
     "@context": "https://schema.org",
@@ -98,7 +112,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
     },
     "offers": {
       "@type": "Offer",
-      "url": `${SITE_DOMAIN}/movie/${movie.slug || movie.id}`,
+      "url": canonicalUrl,
       "availability": "https://schema.org/InStock",
       "price": "0",
       "priceCurrency": "USD"
