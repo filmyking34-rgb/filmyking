@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Plus, Edit, Trash2, Save, Eye, EyeOff, LogOut, Search, Copy, ClipboardCheck, ChevronLeft, ChevronRight, Globe, Lock } from "lucide-react"
 import Image from "next/image"
+import { generateSlug } from "@/lib/utils/slug"
 
 import {
   getMovies,
@@ -266,8 +267,12 @@ export default function AdminPanel({ onClose, onDataChange }: AdminPanelProps) {
         .map((tag) => tag.trim().toLowerCase())
         .filter((tag) => tag.length > 0)
 
+      // ✅ Movie Title Slug automatically banega
+      const generatedSlug = generateSlug(formData.title, formData.year)
+
       const updateData = {
           title: formData.title,
+          slug: generatedSlug, // ✅ Slug Supabase me save hoga
           year: formData.year,
           rating: formData.rating,
           duration: formData.duration,
@@ -691,4 +696,4 @@ export default function AdminPanel({ onClose, onDataChange }: AdminPanelProps) {
       </div>
     </div>
   )
-}
+        }
